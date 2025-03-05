@@ -1,0 +1,16 @@
+{
+  "os": "macOS-15.3.1-arm64-arm-64bit",
+  "python": "CPython 3.10.13",
+  "startedAt": "2025-03-05T17:24:54.978173Z",
+  "program": "/Users/gokul/IITM Projects/deep learning/DA6401-A1/test.py",
+  "codePath": "test.py",
+  "git": {
+    "remote": "https://github.com/gokulakrishnanbalaji/DA6401-A1.git",
+    "commit": "99cdae874efd73d5ebb0af6642ddb0d03779a22a"
+  },
+  "email": "da24m007@smail.iitm.ac.in",
+  "root": "/Users/gokul/IITM Projects/deep learning/DA6401-A1",
+  "host": "Gokulakrishnans-MacBook-Air.local",
+  "executable": "/Users/gokul/miniconda3/envs/dsai/bin/python3",
+  "codePathLocal": "test.py"
+}
