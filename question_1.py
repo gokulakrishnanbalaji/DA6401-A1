@@ -21,8 +21,9 @@ class_names = [
 sample_images = []
 sample_labels = []
 
+# Get first index of each class
 for class_id in range(10):
-    idx = np.where(y_train == class_id)[0][0]  # Get first index of each class
+    idx = np.where(y_train == class_id)[0][0]  
     sample_images.append(x_train[idx])
     sample_labels.append(class_names[class_id])
 
