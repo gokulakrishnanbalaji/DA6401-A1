@@ -53,6 +53,6 @@ if __name__ == "__main__":
     }
 }
     # Create sweep (input sweep_config here)
-    sweep_id = wandb.sweep(sweep_config, project="fashion_mnist_sweep")
+    sweep_id = wandb.sweep(sweep_config, entity="da24m007-iit-madras",project="DL-A1")
     # Run agent to execute the sweep
     wandb.agent(sweep_id, function=train)
