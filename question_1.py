@@ -28,11 +28,3 @@ for class_id in range(10):
     sample_labels.append(class_names[class_id])
 
 
-# Reporting one image per class in wandb
-run.log({
-    "Fashion-MNIST Samples": [
-        wandb.Image(img, caption=lbl) for img, lbl in zip(sample_images, sample_labels)
-    ]
-})
-
-run.finish()

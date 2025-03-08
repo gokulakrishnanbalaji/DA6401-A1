@@ -11,7 +11,7 @@ def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
     
     # Configuration will be injected by wandb sweep
     config = wandb.config  
-    
+
     # Simulated Fashion MNIST data split
     val_size = int(0.1 * len(X_train_full))
     X_train, X_val = X_train_full[:-val_size], X_train_full[-val_size:]
@@ -34,9 +34,8 @@ def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
     # Train the network
     nn.train(X_train, y_train, X_val, y_val, X_test, y_test, config.epochs)
 
-# Define sweep configuration
 sweep_config = {
-    'method': 'bayes',
+    'method': 'bayes',  # Bayesian Optimization
     'metric': {'name': 'val_accuracy', 'goal': 'maximize'},
     'parameters': {
         'epochs': {'values': [5, 10]},
@@ -49,6 +48,12 @@ sweep_config = {
         'weight_decay': {'values': [0, 0.0005, 0.5]},
         'weight_init': {'values': ['random', 'xavier']},
         'activation': {'values': ['sigmoid', 'tanh', 'relu']}
+    },
+    'early_terminate': {
+        'type': 'hyperband',  # Stops bad runs early
+        'min_iter': 3
     }
 }
+
+
 
