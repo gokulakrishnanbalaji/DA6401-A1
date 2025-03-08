@@ -2,12 +2,15 @@ import wandb
 
 # Define the train function
 def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
+
+    # Initialize wandb run
     run = wandb.init(
         entity="da24m007-iit-madras",
         project="DL-A1"
     )
     
-    config = wandb.config  # Configuration will be injected by wandb sweep
+    # Configuration will be injected by wandb sweep
+    config = wandb.config  
     
     # Simulated Fashion MNIST data split
     val_size = int(0.1 * len(X_train_full))
