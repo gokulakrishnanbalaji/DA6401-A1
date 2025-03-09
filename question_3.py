@@ -4,14 +4,13 @@ import numpy as np
 from question_2 import FFNN
 #importing wandb
 import wandb
-from config import entity, project
 
 # defining AdvancedFFNN class (inherits FFNN) that supports backpropagation, with different optimisers
 class AdvancedFFNN(FFNN):
     # constructor, that takes in required hyperparameters
     def __init__(self, input_size=784, hidden_layers=[128, 64], output_size=10, 
                  learning_rate=0.01, optimizer='sgd', weight_decay=0, 
-                 activation='sigmoid', batch_size=32, weight_init='random',mse=False):
+                 activation='sigmoid', batch_size=32, weight_init='random',momentum=0.9,mse=False):
         
         # Calling constructor of FFNN class
         super().__init__(input_size, hidden_layers, output_size, learning_rate)
@@ -23,6 +22,7 @@ class AdvancedFFNN(FFNN):
         self.activation = activation
         self.weight_init = weight_init
 
+        self.momentum = momentum
         self.mse = mse
     
         self.mse=mse
@@ -204,8 +204,8 @@ class AdvancedFFNN(FFNN):
                     self.velocity[i] = {'W': 0, 'b': 0}
                 
                 # calculate the new velocity (v = 0.9 * v - learning_rate * gradient)
-                self.velocity[i]['W'] = 0.9 * self.velocity[i]['W'] - self.learning_rate * grads[i]['W']
-                self.velocity[i]['b'] = 0.9 * self.velocity[i]['b'] - self.learning_rate * grads[i]['b']
+                self.velocity[i]['W'] = self.momentum * self.velocity[i]['W'] - self.learning_rate * grads[i]['W']
+                self.velocity[i]['b'] = self.momentum * self.velocity[i]['b'] - self.learning_rate * grads[i]['b']
                 
                 # update weghts and biases (W = W + v, b = b + v)
                 layer['W'] += self.velocity[i]['W']

@@ -1,6 +1,7 @@
 import wandb
+from train import config
 
-entity="da24m007-iit-madras"
-project="DL-A1-V7"
+entity=config.wandb_entity
+project=config.wandb_project
 
 run = wandb.init(project=project, entity=entity)

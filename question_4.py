@@ -4,15 +4,10 @@ import os
 from config import project, entity
 
 # Define the train function
-def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
+def train(X_train, y_train, X_val, y_val, X_test, y_test, AdvancedFFNN):
     # Configuration will be injected by wandb sweep
     run = wandb.init()  
     config = wandb.config  
-
-    # Simulated Fashion MNIST data split
-    val_size = int(0.1 * len(X_train_full))
-    X_train, X_val = X_train_full[:-val_size], X_train_full[-val_size:]
-    y_train, y_val = y_train_full[:-val_size], y_train_full[-val_size:]
     
     # Initialize network with sweep parameters
     nn = AdvancedFFNN(

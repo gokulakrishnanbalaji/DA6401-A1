@@ -4,8 +4,12 @@ from keras.datasets import fashion_mnist
 import numpy as np
 
 # Getting training and testing data from fashion_mnist dataset
-(X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
 
+(X_train_full, y_train_full), (X_test, y_test) = fashion_mnist.load_data()
+
+val_size = int(0.1 * len(X_train_full))
+X_train, X_val = X_train_full[:-val_size], X_train_full[-val_size:]
+y_train, y_val = y_train_full[:-val_size], y_train_full[-val_size:]
 # storing the class names in a list
 class_names = [
     "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
