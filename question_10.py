@@ -9,9 +9,9 @@ from config import entity, project
 # (relu, momentum ) ,(tanh, nadam), (tanh,momentum)
 def compare_models(epochs,batch_size):
     wandb.init(project=project, entity=entity)
-    model_1 = AdvancedFFNN(hidden_layers=[128, 64, 32, 16, 8], learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='relu')
-    model_2 = AdvancedFFNN(hidden_layers=[128, 64, 32, 16, 8], learning_rate=1e-3, optimizer='nadam', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='tanh')
-    model_3 = AdvancedFFNN(hidden_layers=[128, 64, 32, 16, 8], learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='tanh')
+    model_1 = AdvancedFFNN(num_layers=5,hidden_size=128, learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='relu')
+    model_2 = AdvancedFFNN(num_layers=5,hidden_size=128, learning_rate=1e-3, optimizer='nadam', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='tanh')
+    model_3 = AdvancedFFNN(num_layers=5,hidden_size=128, learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=batch_size, weight_init='xavier', activation='tanh')
 
     # running each of the model for 10 epochs
     model_1.train(X_train, y_train,X_val,y_val,X_test, y_test, epochs)
@@ -36,4 +36,4 @@ def compare_models(epochs,batch_size):
     wandb.finish()
 
 if __name__ == "__main__":
-    compare_models()
+    compare_models(epochs=20,batch_size=64) 

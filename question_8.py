@@ -21,7 +21,8 @@ def compare_loss():
 
 
     model = AdvancedFFNN(
-        hidden_layers=best_hyperparams.get('hidden_layers'),
+        num_layers=best_hyperparams.get('num_layers'),
+        hidden_size=best_hyperparams.get('hidden_size'),
         learning_rate=best_hyperparams.get('learning_rate'),
         optimizer=best_hyperparams.get('optimizer'),
         weight_decay=best_hyperparams.get('weight_decay'),
