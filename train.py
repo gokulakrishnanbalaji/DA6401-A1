@@ -7,7 +7,7 @@ def parse_arguments():
     
     # Weights & Biases arguments
     parser.add_argument('-wp', '--wandb_project', 
-                       default='DL-A1-V7',
+                       default='final please work',
                        type=str,
                        help='Project name used to track experiments in Weights & Biases dashboard')
     
@@ -96,7 +96,7 @@ def parse_arguments():
                        help='Number of hidden neurons in a feedforward layer')
     
     parser.add_argument('-a', '--activation',
-                       default='ReLU',
+                       default='sigmoid',
                        choices=['identity', 'sigmoid', 'tanh', 'ReLU'],
                        help='Activation function to use')
 
@@ -109,7 +109,7 @@ config = parse_arguments()
 wandb.init(project=config.wandb_project, entity=config.wandb_entity)
 
 if config.dataset == 'mnist':
-    from question_10 import X_train, y_train, X_test, y_test, X_val, y_val
+    from load_mnist import X_train, y_train, X_test, y_test, X_val, y_val
 else:
     from question_1 import X_train, y_train, X_test, y_test, X_val, y_val
 
