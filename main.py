@@ -27,7 +27,7 @@ def main():
             train(X_train, y_train, X_val,y_val, X_test, y_test, AdvancedFFNN)
 
         # Run the sweep
-        wandb.agent(sweep_id, function=run_sweep, count=5)
+        wandb.agent(sweep_id, function=run_sweep, count=50)
 
         wandb.finish()
 
