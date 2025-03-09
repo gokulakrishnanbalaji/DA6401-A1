@@ -51,7 +51,7 @@ class AdvancedFFNN(FFNN):
         # hyperparameters for optimisers
         self.beta=beta
         self.beta1, self.beta2 = beta1,beta2
-        self.rho = 0.9
+        
         
         # initialise weights using xavier initialisation
         if weight_init == 'Xavier':
@@ -239,8 +239,8 @@ class AdvancedFFNN(FFNN):
                     self.v[i] = {'W': 0, 'b': 0}
 
                 # calculate the new velocity (v = rho * v + (1-rho)*learning_rate * gradient)
-                self.v[i]['W'] = self.rho * self.v[i]['W'] + (1-self.rho) * np.square(grads[i]['W'])
-                self.v[i]['b'] = self.rho * self.v[i]['b'] + (1-self.rho) * np.square(grads[i]['b'])
+                self.v[i]['W'] = self.beta * self.v[i]['W'] + (1-self.beta) * np.square(grads[i]['W'])
+                self.v[i]['b'] = self.beta * self.v[i]['b'] + (1-self.beta) * np.square(grads[i]['b'])
                 
                 # updating weights and biases 
                 layer['W'] -= self.learning_rate * grads[i]['W'] / (np.sqrt(self.v[i]['W']) + self.epsilon)
