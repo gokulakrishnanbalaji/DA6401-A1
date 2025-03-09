@@ -33,7 +33,7 @@ def compare_loss():
 
     model.train(X_train, y_train, X_train, y_train,X_test, y_test, 20)
 
-    mse_loss , cross_loss = model.return_mse_loss()
+    mse_loss , cross_loss = model.mse_loss , model.cross_loss
 
     return mse_loss, cross_loss
 

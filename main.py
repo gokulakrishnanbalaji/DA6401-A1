@@ -7,7 +7,7 @@ from train import config
 
 
 
-if __name__ == "__main__":
+def main():
 
     if config.dataset == "fashion_mnist":
         run = wandb.init(project=project, entity=entity)
@@ -37,3 +37,5 @@ if __name__ == "__main__":
 
 
 
+if __name__ == "__main__":
+    main()

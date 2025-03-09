@@ -8,11 +8,12 @@ import wandb
 # defining AdvancedFFNN class (inherits FFNN) that supports backpropagation, with different optimisers
 class AdvancedFFNN(FFNN):
     # constructor, that takes in required hyperparameters
-    def __init__(self, input_size=784, hidden_layers=[128, 64], output_size=10, 
+    def __init__(self, input_size=784, num_layers=1,hidden_size=4, output_size=10, 
                  learning_rate=0.01, optimizer='sgd', weight_decay=0, 
-                 activation='sigmoid', batch_size=32, weight_init='random',momentum=0.9,mse=False):
+                 activation='sigmoid', batch_size=32, weight_init='random',momentum=0.9,mse=False,beta=0.5,beta1=0.5,beta2=0.5,epsilon=1e-6):
         
         # Calling constructor of FFNN class
+        hidden_layers = [hidden_size] * num_layers
         super().__init__(input_size, hidden_layers, output_size, learning_rate)
 
         # storing the hyperparameters in class variables
@@ -45,14 +46,15 @@ class AdvancedFFNN(FFNN):
         self.t = 0
 
         # epsilon value for numerical stability
-        self.epsilon = 1e-8
+        self.epsilon = epsilon
 
         # hyperparameters for optimisers
-        self.beta1, self.beta2 = 0.9, 0.999
+        self.beta=beta
+        self.beta1, self.beta2 = beta1,beta2
         self.rho = 0.9
         
         # initialise weights using xavier initialisation
-        if weight_init == 'xavier':
+        if weight_init == 'Xavier':
             self.initialize_xavier()
 
     # function to initialise weights using xavier initialisation
@@ -81,7 +83,7 @@ class AdvancedFFNN(FFNN):
             return np.tanh(x)
         
         # if relu activation function is used
-        elif self.activation == 'relu':
+        elif self.activation == 'ReLU':
             return np.maximum(0, x)
         
         # if none of the above, use sigmoid activation function
@@ -100,7 +102,7 @@ class AdvancedFFNN(FFNN):
             return 1 - np.tanh(x)**2
         
         # if relu activation function is used, return derivative of relu function
-        elif self.activation == 'relu':
+        elif self.activation == 'ReLU':
             return np.where(x > 0, 1, 0)
         
         # if none of the above, return derivative of sigmoid function

@@ -6,12 +6,13 @@ from config import project, entity
 # Define the train function
 def train(X_train, y_train, X_val, y_val, X_test, y_test, AdvancedFFNN):
     # Configuration will be injected by wandb sweep
-    run = wandb.init()  
+    run = wandb.init(project=project, entity=entity)  
     config = wandb.config  
     
     # Initialize network with sweep parameters
     nn = AdvancedFFNN(
-        hidden_layers=config.hidden_layers,
+        num_layers=config.num_layers,
+        hidden_size=config.hidden_size,
         learning_rate=config.learning_rate,
         optimizer=config.optimizer,
         weight_decay=config.weight_decay,
@@ -21,7 +22,7 @@ def train(X_train, y_train, X_val, y_val, X_test, y_test, AdvancedFFNN):
     )
     
     # Set run name based on config
-    run.name = f"hl_{len(config.hidden_layers)}_bs_{config.batch_size}_ac_{config.activation}"
+    run.name = f"hl_{config.num_layers}_bs_{config.batch_size}_ac_{config.activation}"
     
     # Train the network
     nn.train(X_train, y_train, X_val, y_val, X_test, y_test, config.epochs)
@@ -45,9 +46,8 @@ sweep_config = {
     'metric': {'name': 'val_accuracy', 'goal': 'maximize'},
     'parameters': {
         'epochs': {'values': [5, 10]},
-        'hidden_layers': {
-            'values': [[128, 64, 32], [128, 64, 32, 16], [128, 64, 32, 16, 8]]
-        },
+        'num_layers': {'values': [1, 2, 3]},
+        'hidden_size': {'values': [32, 64, 128]},
         'learning_rate': {'values': [1e-3, 1e-4]},
         'optimizer': {'values': ['sgd', 'momentum', 'nesterov', 'rmsprop', 'adam', 'nadam']},
         'batch_size': {'values': [16, 32, 64]},

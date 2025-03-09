@@ -7,12 +7,12 @@ def parse_arguments():
     
     # Weights & Biases arguments
     parser.add_argument('-wp', '--wandb_project', 
-                       default='myprojectname',
+                       default='DL-A1-V7',
                        type=str,
                        help='Project name used to track experiments in Weights & Biases dashboard')
     
     parser.add_argument('-we', '--wandb_entity',
-                       default='myname',
+                       default='da24m007-iit-madras',
                        type=str,
                        help='Wandb Entity used to track experiments in the Weights & Biases dashboard')
     
@@ -23,12 +23,12 @@ def parse_arguments():
                        help='Dataset to use for training')
     
     parser.add_argument('-e', '--epochs',
-                       default=1,
+                       default=10,
                        type=int,
                        help='Number of epochs to train neural network')
     
     parser.add_argument('-b', '--batch_size',
-                       default=4,
+                       default=64,
                        type=int,
                        help='Batch size used to train neural network')
     
@@ -39,12 +39,12 @@ def parse_arguments():
                        help='Loss function to use')
     
     parser.add_argument('-o', '--optimizer',
-                       default='sgd',
+                       default='adam',
                        choices=['sgd', 'momentum', 'nag', 'rmsprop', 'adam', 'nadam'],
                        help='Optimizer to use')
     
     parser.add_argument('-lr', '--learning_rate',
-                       default=0.1,
+                       default=0.001,
                        type=float,
                        help='Learning rate used to optimize model parameters')
     
@@ -81,22 +81,22 @@ def parse_arguments():
     
     # Network architecture parameters
     parser.add_argument('-w_i', '--weight_init',
-                       default='random',
+                       default='Xavier',
                        choices=['random', 'Xavier'],
                        help='Weight initialization method')
     
     parser.add_argument('-nhl', '--num_layers',
-                       default=1,
+                       default=5,
                        type=int,
                        help='Number of hidden layers used in feedforward neural network')
     
     parser.add_argument('-sz', '--hidden_size',
-                       default=4,
+                       default=128,
                        type=int,
                        help='Number of hidden neurons in a feedforward layer')
     
     parser.add_argument('-a', '--activation',
-                       default='sigmoid',
+                       default='ReLU',
                        choices=['identity', 'sigmoid', 'tanh', 'ReLU'],
                        help='Activation function to use')
 
@@ -122,11 +122,21 @@ momentum = config.momentum
 beta = config.beta
 beta1 = config.beta1
 beta2 = config.beta2
-epsion = config.epsilon
+epsilon = config.epsilon
 weight_decay = config.weight_decay
 weight_init = config.weight_init
 num_layers = config.num_layers
 hidden_size = config.hidden_size
 activation = config.activation
 
-model = AdvancedFFNN()
+if loss == 'mean_squared_error':
+    mse_loss = True
+else:
+    mse_loss = False
+
+if __name__ == "__main__":
+    model = AdvancedFFNN(num_layers=num_layers, hidden_size=hidden_size, learning_rate=lr, optimizer=optimizer, weight_decay=weight_decay, activation=activation, batch_size=batch_size, weight_init=weight_init, momentum=momentum, mse=mse_loss, beta=beta, beta1=beta1, beta2=beta2, epsilon=epsilon)
+    model.train(X_train, y_train, X_val, y_val, X_test, y_test, epochs)
+
+    print(f"Test Accuracy: {model.test_accuracy[-1]}")
+
