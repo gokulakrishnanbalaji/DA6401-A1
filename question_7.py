@@ -3,6 +3,7 @@ import numpy as np
 import os
 from sklearn.metrics import confusion_matrix
 from config import entity, project
+from question_1 import X_test, y_test
 
 
 # Forward pass function
@@ -59,3 +60,5 @@ def plot_confusion_matrix( X_test, y_test):
     })
     run.finish()
 
+if __name__ == '__main__':
+    plot_confusion_matrix(X_test.reshape(10000,784), y_test)

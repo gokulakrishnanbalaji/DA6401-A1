@@ -13,6 +13,8 @@ def compare_loss():
     best_hyperparams = best_run.config
 
     # Print results
+    print("Best Run URL:", best_run.url)  
+
     print("Best Run ID:", best_run.id)
     print("Best Validation Accuracy:", best_run.summary.get("val_accuracy", "N/A"))
     print("Best Hyperparameters:", best_hyperparams)
@@ -36,16 +38,21 @@ def compare_loss():
     return mse_loss, cross_loss
 
 if __name__ == "__main__":
-    mse_loss, cross_loss = compare_loss()
-    epochs = list(range(len(mse_loss))) 
-    print(mse_loss)
-    print(cross_loss)
+    mse_loss, cross_loss = compare_loss()  
+    epochs = list(range(len(mse_loss)))  # Generate x-axis (epochs)
+
+    wandb.init(project=project, entity=entity)
+
+    # Create a line plot with both loss curves
     wandb.log({
-        "Epochs": epochs,
-        "mse_loss":mse_loss,
-        "cross_loss":cross_loss
+        "Loss Curves": wandb.plot.line_series(
+            xs=epochs,
+            ys=[mse_loss, cross_loss],
+            keys=["MSE Loss", "Cross Entropy Loss"],
+            title="Loss Curves",
+            xname="Epochs"
+        )
     })
+
     wandb.finish()
 
-if __name__ == "__main__":
-    compare_loss()

@@ -4,6 +4,7 @@ import numpy as np
 from question_2 import FFNN
 #importing wandb
 import wandb
+from config import entity, project
 
 # defining AdvancedFFNN class (inherits FFNN) that supports backpropagation, with different optimisers
 class AdvancedFFNN(FFNN):
@@ -359,6 +360,7 @@ class AdvancedFFNN(FFNN):
                 self.weights[f'W_{i}'] = layer['W'].copy()
                 self.biases[f'b_{i}'] = layer['b'].copy()
 
+            wandb.init(project=project, entity=entity)
             # log the metrics
             wandb.log({
                 'epoch': epoch,
