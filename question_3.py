@@ -32,6 +32,8 @@ class AdvancedFFNN(FFNN):
         self.weights = {}
         self.biases = {}
 
+        self.test_accuracy = []
+
         # initialise a list of dictionaries to track the velocity or momentum of weights and biases
         self.velocity = [{} for _ in self.layers]
 
@@ -354,13 +356,15 @@ class AdvancedFFNN(FFNN):
             
             if self.mse:
                 self.mse_loss.append(np.mean((np.argmax(test_pred, axis=1) - np.argmax(y_test, axis=1))**2))
-                self.cross_loss.append(test_loss)
+            self.cross_loss.append(test_loss)
             
             for i, layer in enumerate(self.layers):
                 self.weights[f'W_{i}'] = layer['W'].copy()
                 self.biases[f'b_{i}'] = layer['b'].copy()
 
-            wandb.init(project=project, entity=entity)
+            self.test_accuracy.append(test_acc)
+
+            
             # log the metrics
             wandb.log({
                 'epoch': epoch,
@@ -371,6 +375,8 @@ class AdvancedFFNN(FFNN):
                 'val_accuracy': val_acc,
                 'test_accuracy': test_acc
             })
+
+            
             # print the metrics
             print(f"Epoch {epoch+1}/{epochs}: val_acc={val_acc:.4f}, test_acc={test_acc:.4f}")
 
@@ -381,4 +387,7 @@ class AdvancedFFNN(FFNN):
     def return_mse_loss(self):
         if self.mse:
             return self.mse_loss, self.cross_loss
+        else:
+            return self.cross_loss
+        
         

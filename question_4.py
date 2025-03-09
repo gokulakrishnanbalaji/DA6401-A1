@@ -6,7 +6,7 @@ from config import project, entity
 # Define the train function
 def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
     # Configuration will be injected by wandb sweep
-    run = wandb.init(entity=entity, project=project)  
+    run = wandb.init()  
     config = wandb.config  
 
     # Simulated Fashion MNIST data split

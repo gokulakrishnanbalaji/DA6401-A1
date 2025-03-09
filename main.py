@@ -27,7 +27,7 @@ if __name__ == "__main__":
         train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN)
 
     # Run the sweep
-    wandb.agent(sweep_id, function=run_sweep, count=50)
+    wandb.agent(sweep_id, function=run_sweep, count=5)
 
     wandb.finish()
 
