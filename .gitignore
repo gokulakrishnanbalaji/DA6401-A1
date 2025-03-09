@@ -2,3 +2,6 @@ __pycache__/
 wandb/
 artifacts/
 hl_*
+models/
+da24m007-iit-madras/
+test.ipynb

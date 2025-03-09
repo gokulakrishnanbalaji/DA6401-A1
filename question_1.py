@@ -1,12 +1,7 @@
 # importing keras to download dataset
 from keras.datasets import fashion_mnist
-import wandb
-
 # importing numpy
 import numpy as np
-
-# importing run object of wandb class to commit
-from config import run
 
 # Getting training and testing data from fashion_mnist dataset
 (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()

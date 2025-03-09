@@ -2,7 +2,8 @@ import wandb
 import numpy as np
 import os
 from sklearn.metrics import confusion_matrix
-from question_1 import X_test, y_test
+from config import entity, project
+
 
 # Forward pass function
 def forward(X, W, b):
@@ -22,17 +23,17 @@ def forward(X, W, b):
     return h
 
 # Plot and log confusion matrix
-def plot_confusion_matrix(run, X_test, y_test):
+def plot_confusion_matrix( X_test, y_test):
     class_names = [
     "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
     "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"
 ]
     
     api = wandb.Api()
-    runs = api.runs("da24m007-iit-madras/DL-A1")
+    runs = api.runs(f"{entity}/{project}")
     best_run = max(runs, key=lambda run: run.summary.get("val_accuracy", 0))
     
-    artifact = api.artifact(f"da24m007-iit-madras/DL-A1/{best_run.name}:latest")
+    artifact = api.artifact(f"{entity}/{project}/{best_run.name}:latest")
     artifact_dir = artifact.download()
     
     artifact_files = os.listdir(artifact_dir)
@@ -46,23 +47,15 @@ def plot_confusion_matrix(run, X_test, y_test):
     logits = forward(X_test, W, b)
     y_pred = np.argmax(logits, axis=1)
     
-    # Compute confusion matrix
-    cm = confusion_matrix(y_test, y_pred)
-    
-    # Initialize a new W&B run to log the confusion matrix
-    with wandb.init(project="DL-A1", entity="da24m007-iit-madras", job_type="evaluation"):
-        # Log confusion matrix to W&B
-        wandb.log({
-            "confusion_matrix": wandb.plot.confusion_matrix(
-                probs=None,  # Use None since we have predicted labels, not probabilities
-                y_true=y_test,
-                preds=y_pred,
-                class_names=class_names
-            )
-        })
+    # Log confusion matrix to W&B
+    run = wandb.init(entity=entity, project=project)
+    run.log({
+        "confusion_matrix": wandb.plot.confusion_matrix(
+            probs=None,  # Use None since we have predicted labels, not probabilities
+            y_true=y_test,
+            preds=y_pred,
+            class_names=class_names
+        )
+    })
+    run.finish()
 
-# Main execution
-if __name__ == "__main__":
-    # Adjust X_test and y_test to match your network (e.g., MNIST-like)
-
-    plot_confusion_matrix(None, X_test.reshape(10000,784), y_test)

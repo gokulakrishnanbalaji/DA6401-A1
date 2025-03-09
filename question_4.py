@@ -1,16 +1,12 @@
 import wandb
 import numpy as np
+import os
+from config import project, entity
 
 # Define the train function
 def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
-
-    # Initialize wandb run
-    run = wandb.init(
-        entity="da24m007-iit-madras",
-        project="DL-A1"
-    )
-    
     # Configuration will be injected by wandb sweep
+    run = wandb.init(entity=entity, project=project)  
     config = wandb.config  
 
     # Simulated Fashion MNIST data split
@@ -36,7 +32,9 @@ def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
     nn.train(X_train, y_train, X_val, y_val, X_test, y_test, config.epochs)
     W,b = nn.return_weights_and_bias()
 
-    model_path = f"{run.name}.npz"
+    os.makedirs("models", exist_ok=True)
+
+    model_path = f"models/{run.name}.npz"
     np.savez(model_path,
             weights=W,
             biases=b)
@@ -45,6 +43,7 @@ def train(X_train_full, y_train_full, X_test, y_test, AdvancedFFNN):
     artifact = wandb.Artifact(name=f"{run.name}", type="model", description=f"model for run {run.name}")
     artifact.add_file(model_path)
     wandb.log_artifact(artifact)
+
 
 sweep_config = {
     'method': 'bayes',  # Bayesian Optimization

@@ -1,10 +1,7 @@
 # importing numpy
 import numpy as np
-
 # importing from other modules
 from question_2 import FFNN
-from config import run
-
 #importing wandb
 import wandb
 
@@ -13,7 +10,7 @@ class AdvancedFFNN(FFNN):
     # constructor, that takes in required hyperparameters
     def __init__(self, input_size=784, hidden_layers=[128, 64], output_size=10, 
                  learning_rate=0.01, optimizer='sgd', weight_decay=0, 
-                 activation='sigmoid', batch_size=32, weight_init='random'):
+                 activation='sigmoid', batch_size=32, weight_init='random',mse=False):
         
         # Calling constructor of FFNN class
         super().__init__(input_size, hidden_layers, output_size, learning_rate)
@@ -25,6 +22,11 @@ class AdvancedFFNN(FFNN):
         self.activation = activation
         self.weight_init = weight_init
 
+        self.mse = mse
+    
+        self.mse=mse
+        self.mse_loss = []
+        self.cross_loss=[]
         # for returing the final set of weights and biases
         self.weights = {}
         self.biases = {}
@@ -343,12 +345,15 @@ class AdvancedFFNN(FFNN):
             train_loss = self.compute_loss(train_pred, y_train)
             val_loss = self.compute_loss(val_pred, y_val)
             test_loss = self.compute_loss(test_pred, y_test)
-            
-            # calculate accuracy for training, validation and test data
+
+                        # calculate accuracy for training, validation and test data
             train_acc = np.mean(np.argmax(train_pred, axis=1) == np.argmax(y_train, axis=1))
             val_acc = np.mean(np.argmax(val_pred, axis=1) == np.argmax(y_val, axis=1))
             test_acc = np.mean(np.argmax(test_pred, axis=1) == np.argmax(y_test, axis=1))
             
+            if self.mse:
+                self.mse_loss.append(np.mean((np.argmax(test_pred, axis=1) - np.argmax(y_test, axis=1))**2))
+                self.cross_loss.append(test_loss)
             
             for i, layer in enumerate(self.layers):
                 self.weights[f'W_{i}'] = layer['W'].copy()
@@ -364,12 +369,14 @@ class AdvancedFFNN(FFNN):
                 'val_accuracy': val_acc,
                 'test_accuracy': test_acc
             })
-
-
             # print the metrics
             print(f"Epoch {epoch+1}/{epochs}: val_acc={val_acc:.4f}, test_acc={test_acc:.4f}")
 
         
     def return_weights_and_bias(self):
         return self.weights, self.biases
+    
+    def return_mse_loss(self):
+        if self.mse:
+            return self.mse_loss, self.cross_loss
         
