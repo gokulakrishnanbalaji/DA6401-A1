@@ -25,6 +25,10 @@ class AdvancedFFNN(FFNN):
         self.activation = activation
         self.weight_init = weight_init
 
+        # for returing the final set of weights and biases
+        self.weights = {}
+        self.biases = {}
+
         # initialise a list of dictionaries to track the velocity or momentum of weights and biases
         self.velocity = [{} for _ in self.layers]
 
@@ -345,6 +349,11 @@ class AdvancedFFNN(FFNN):
             val_acc = np.mean(np.argmax(val_pred, axis=1) == np.argmax(y_val, axis=1))
             test_acc = np.mean(np.argmax(test_pred, axis=1) == np.argmax(y_test, axis=1))
             
+            
+            for i, layer in enumerate(self.layers):
+                self.weights[f'W_{i}'] = layer['W'].copy()
+                self.biases[f'b_{i}'] = layer['b'].copy()
+
             # log the metrics
             wandb.log({
                 'epoch': epoch,
@@ -356,5 +365,11 @@ class AdvancedFFNN(FFNN):
                 'test_accuracy': test_acc
             })
 
+
             # print the metrics
             print(f"Epoch {epoch+1}/{epochs}: val_acc={val_acc:.4f}, test_acc={test_acc:.4f}")
+
+        
+    def return_weights_and_bias(self):
+        return self.weights, self.biases
+        
