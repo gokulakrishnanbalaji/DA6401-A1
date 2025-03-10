@@ -91,7 +91,7 @@ def parse_arguments():
                        help='Number of hidden layers used in feedforward neural network')
     
     parser.add_argument('-sz', '--hidden_size',
-                       default=128,
+                       default=64,
                        type=int,
                        help='Number of hidden neurons in a feedforward layer')
     
