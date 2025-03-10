@@ -7,7 +7,7 @@ def parse_arguments():
     
     # Weights & Biases arguments
     parser.add_argument('-wp', '--wandb_project', 
-                       default='final please work',
+                       default='final please work V2',
                        type=str,
                        help='Project name used to track experiments in Weights & Biases dashboard')
     
@@ -75,7 +75,7 @@ def parse_arguments():
                        help='Epsilon used by optimizers')
     
     parser.add_argument('-w_d', '--weight_decay',
-                       default=0.0,
+                       default=0.0005,
                        type=float,
                        help='Weight decay used by optimizers')
     

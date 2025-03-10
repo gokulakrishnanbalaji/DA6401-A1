@@ -9,9 +9,9 @@ from config import entity, project
 
 def compare_models():
     wandb.init(project=project, entity=entity)
-    model_1 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='adam', weight_decay=0, batch_size=64, weight_init='xavier', activation='sigmoid')
-    model_2 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='nadam', weight_decay=0, batch_size=64, weight_init='xavier', activation='ReLU')
-    model_3 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=64, weight_init='xavier', activation='tanh')
+    model_1 = AdvancedFFNN(num_layers=4,hidden_size=128, learning_rate=1e-3, optimizer='adam', weight_decay=0.0005, batch_size=64, weight_init='xavier', activation='sigmoid')
+    model_2 = AdvancedFFNN(num_layers=4,hidden_size=128, learning_rate=1e-3, optimizer='momentum', weight_decay=0.0005, batch_size=64, weight_init='xavier', activation='ReLU')
+    model_3 = AdvancedFFNN(num_layers=4,hidden_size=128, learning_rate=1e-3, optimizer='rmsprop', weight_decay=0.0005, batch_size=64, weight_init='xavier', activation='ReLU')
 
     # running each of the model for 10 epochs
     model_1.train(X_train, y_train,X_val,y_val,X_test, y_test, 20)
@@ -27,8 +27,8 @@ def compare_models():
 
     # Append accuracy values for each model
     table.add_data("adam + sigmoid", accuracy[0])
-    table.add_data("nadam + ReLU", accuracy[1])
-    table.add_data("momentum + tanh", accuracy[2])
+    table.add_data("momentum + ReLU", accuracy[1])
+    table.add_data("rmsprop + ReLU", accuracy[2])
 
     # Log the table
     wandb.log({"Test Accuracy Comparison": table})
