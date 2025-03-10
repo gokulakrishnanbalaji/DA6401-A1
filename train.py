@@ -86,7 +86,7 @@ def parse_arguments():
                        help='Weight initialization method')
     
     parser.add_argument('-nhl', '--num_layers',
-                       default=5,
+                       default=1,
                        type=int,
                        help='Number of hidden layers used in feedforward neural network')
     
