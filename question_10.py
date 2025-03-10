@@ -10,7 +10,7 @@ from config import entity, project
 def compare_models():
     wandb.init(project=project, entity=entity)
     model_1 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='adam', weight_decay=0, batch_size=64, weight_init='xavier', activation='sigmoid')
-    model_2 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='nadam', weight_decay=0, batch_size=64, weight_init='xavier', activation='tanh')
+    model_2 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='nadam', weight_decay=0, batch_size=64, weight_init='xavier', activation='ReLU')
     model_3 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='momentum', weight_decay=0, batch_size=64, weight_init='xavier', activation='tanh')
 
     # running each of the model for 10 epochs
@@ -26,9 +26,9 @@ def compare_models():
     table = wandb.Table(columns=["Model", "Test Accuracy"])
 
     # Append accuracy values for each model
-    table.add_data("ReLU + Momentum", accuracy[0])
-    table.add_data("Tanh + Nadam", accuracy[1])
-    table.add_data("Tanh + Momentum", accuracy[2])
+    table.add_data("adam + sigmoid", accuracy[0])
+    table.add_data("nadam + ReLU", accuracy[1])
+    table.add_data("momentum + tanh", accuracy[2])
 
     # Log the table
     wandb.log({"Test Accuracy Comparison": table})
