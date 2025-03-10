@@ -23,7 +23,7 @@ def parse_arguments():
                        help='Dataset to use for training')
     
     parser.add_argument('-e', '--epochs',
-                       default=10,
+                       default=5,
                        type=int,
                        help='Number of epochs to train neural network')
     
@@ -39,7 +39,7 @@ def parse_arguments():
                        help='Loss function to use')
     
     parser.add_argument('-o', '--optimizer',
-                       default='adam',
+                       default='nag',
                        choices=['sgd', 'momentum', 'nag', 'rmsprop', 'adam', 'nadam'],
                        help='Optimizer to use')
     
@@ -86,12 +86,12 @@ def parse_arguments():
                        help='Weight initialization method')
     
     parser.add_argument('-nhl', '--num_layers',
-                       default=1,
+                       default=3,
                        type=int,
                        help='Number of hidden layers used in feedforward neural network')
     
     parser.add_argument('-sz', '--hidden_size',
-                       default=64,
+                       default=128,
                        type=int,
                        help='Number of hidden neurons in a feedforward layer')
     

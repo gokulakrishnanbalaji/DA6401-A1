@@ -214,7 +214,7 @@ class AdvancedFFNN(FFNN):
                 layer['b'] += self.velocity[i]['b']
 
             # if nesterov optimiser is used
-            elif self.optimizer == 'nesterov':
+            elif self.optimizer == 'nag':
 
                 # if velocity is not already stored, initialise it
                 if i not in self.velocity:
