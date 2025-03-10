@@ -6,7 +6,7 @@ from config import entity, project
 
 
 
-# (relu, momentum ) ,(tanh, nadam), (tanh,momentum)
+
 def compare_models():
     wandb.init(project=project, entity=entity)
     model_1 = AdvancedFFNN(num_layers=5,hidden_size=256, learning_rate=1e-3, optimizer='adam', weight_decay=0, batch_size=64, weight_init='xavier', activation='sigmoid')

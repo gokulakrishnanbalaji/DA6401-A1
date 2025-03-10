@@ -53,7 +53,7 @@ sweep_config = {
         'batch_size': {'values': [16, 32, 64]},
         'weight_decay': {'values': [0, 0.0005, 0.5]},
         'weight_init': {'values': ['random', 'xavier']},
-        'activation': {'values': ['sigmoid', 'tanh', 'relu']}
+        'activation': {'values': ['sigmoid', 'tanh', 'ReLU']}
     },
     'early_terminate': {
         'type': 'hyperband',  # Stops bad runs early
